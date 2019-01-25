@@ -1,0 +1,39 @@
+---
+- hosts: cluster_hosts
+  vars:
+          package1: ""
+  tasks:
+          - name: Install https transport
+            apt: pkg=apt-transport-https state=installed update_cache=true
+            become: true
+
+          - name: Install CA Certificates
+            apt: pkg=ca-certificates state=installed update_cache=true
+            become: true
+
+          - name: Install CURL
+            apt: pkg=curl state=installed update_cache=true
+            become: true
+
+          - name: Install gnupg2
+            apt: pkg=gnupg2 state=installed update_cache=true
+            become: true
+
+          - name: Install SPC
+            apt: pkg=software-properties-common state=installed update_cache=true
+            become: true
+
+          - name: Add docker key
+            shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+          - name: add new apt repo
+            shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+            become: true
+
+          - name: get update
+            apt: update_cache=true
+            become: true
+
+          - name: Install docker
+            apt: pkg=docker-ce=17.03.2~ce-0~ubuntu-xenial state=installed update_cache=true
+            become: true
