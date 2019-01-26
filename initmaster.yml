@@ -13,7 +13,7 @@
             become: yes
 
           - name: non root user conf step 2
-            shell: sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+            shell: "cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
             become: yes
 
           - name: non root user conf step 1
