@@ -1,0 +1,14 @@
+---
+- hosts: cluster_hosts
+  vars:
+          localipadres: ""
+  tasks:
+          - name: Get Local IP Adress
+            shell: "/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'"
+            register: localipadres
+
+          - name: Current Config IP Adress
+            debug: var=localipadres
+
+          - name: Start Kubernetes Master
+            shell: "sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address={{localipadres}}"
