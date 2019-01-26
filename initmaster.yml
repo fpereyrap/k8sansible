@@ -1,12 +1,28 @@
 ---
 - hosts: master_hosts
   vars:
-          localipadres: ""
+          masterconf: ""
   tasks:
-          - name: Get Local IP Adress
-            shell: "/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'"
-            register: localipadres
+          - name: Start Kubernetes Cluster
+            shell: sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=10.0.0.153 
+            register: masterconf
             become: yes
 
-          - name: Current Config IP Adress
-            debug: var=localipadres
+          - name: non root user conf step 1
+            shell: mkdir -p $HOME/ .kube
+            become: yes
+
+          - name: non root user conf step 2
+            shell: sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+            become: yes
+
+          - name: non root user conf step 1
+            shell: sudo chown $(id .u):$(id -g) $HOME/.kube/config
+            become: yes
+
+          - name: Initialice pod network
+            shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.10.0/Documentation/kube-flannel.yml
+            become: yes
+            
+          - name: Add nodes information
+            debug: masterconf
