@@ -1,0 +1,8 @@
+---
+- hosts: master_hosts
+  vars:
+          masterconf: ""
+  tasks:
+          - name: Start Kubernetes Cluster
+            shell: kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
+            become: yes

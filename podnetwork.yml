@@ -1,8 +1,0 @@
----
-- hosts: cluster_hosts
-  vars:
-          package1: ""
-  tasks:
-          - name: get update
-            apt: update_cache=true
-            become: true

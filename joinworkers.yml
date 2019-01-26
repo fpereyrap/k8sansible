@@ -1,0 +1,12 @@
+---
+- hosts: worker_hosts
+  vars:
+          joinconf: ""
+  tasks:
+          - name: Start Kubernetes Cluster
+            shell: kubeadm join 10.0.0.153:6443 --token lh5met.swvte89s2lzj3yua --discovery-token-ca-cert-hash sha256:fc9bc70a0019398790325d0a07d0d5838800bcda082215779b981627b0c18a0c
+            register: joinconf
+            become: yes
+            
+          - name: Join information
+            debug: var=joinconf
