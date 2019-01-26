@@ -3,15 +3,6 @@
   vars:
           masterconf: ""
   tasks:
-          - name: Start Kubernetes Cluster
-            shell: kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=10.0.0.153 --ignore-preflight-errors=all
-            register: masterconf
-            become: yes
-
-          - name: non root user conf step 1
-            shell: mkdir -p $HOME/ .kube
-            become: yes
-
           - name: non root user conf step 2
             shell: "cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
             become: yes
